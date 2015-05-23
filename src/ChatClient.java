@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultCaret;
 
+import Models.Message;
+
 public class ChatClient
 {
 	private final String addr = "127.0.0.1";
@@ -25,6 +28,7 @@ public class ChatClient
 	private JTextArea incoming;
 	private JScrollPane qScroll;
 	private JTextField outgoing;
+	private JTextField username;
 	private JButton sendButton;
 	private BufferedReader reader;
 	private PrintWriter writer;
@@ -40,6 +44,7 @@ public class ChatClient
 		
 		this.incoming = new JTextArea(15,50);
 		this.outgoing = new JTextField(40);
+		this.username = new JTextField(40);
 		this.sendButton = new JButton("Send!");
 		this.qScroll = new JScrollPane(this.incoming);
 		
@@ -54,6 +59,7 @@ public class ChatClient
 		this.outgoing.addActionListener(new SendListener());
 		this.sendButton.addActionListener(new SendListener());
 		
+		mainPanel.add(this.username);
 		mainPanel.add(this.qScroll);
 		mainPanel.add(this.outgoing);
 		mainPanel.add(this.sendButton);
@@ -97,7 +103,13 @@ public class ChatClient
 			{
 				if (!outgoing.getText().trim().equals(""))
 				{
-					writer.println(outgoing.getText().trim());
+					String outgoingMsg = outgoing.getText().trim();
+					String user = username.getText();
+					Date date = new Date();
+					
+					Message msg = new Message(outgoingMsg, user, date);
+							
+					writer.println(msg);
 					writer.flush();
 				}
 			}
