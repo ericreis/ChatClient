@@ -32,5 +32,16 @@ public class IncomingReader implements Runnable
 		{
 			ex.printStackTrace();
 		}
+		finally
+		{
+			try
+			{
+				this.inputStream.close();
+			}
+			catch (Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
 	}
 }
