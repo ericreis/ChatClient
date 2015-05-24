@@ -1,10 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Date;
 
@@ -30,8 +29,9 @@ public class ChatClient
 	private JTextField outgoing;
 	private JTextField username;
 	private JButton sendButton;
-	private BufferedReader reader;
-	private PrintWriter writer;
+	
+	private ObjectInputStream inputStream;
+	private ObjectOutputStream outputStream;
 	private Socket sock;
 	
 	public void go()
@@ -67,7 +67,7 @@ public class ChatClient
 		this.setUpNetworking();
 		
 		// Starts thread to receive messages from server
-		Thread t = new Thread(new IncomingReader(this.reader, this.incoming));
+		Thread t = new Thread(new IncomingReader(this.inputStream, this.incoming));
 		t.start();
 		
 		frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
@@ -82,9 +82,8 @@ public class ChatClient
 		try
 		{
 			this.sock = new Socket(this.addr, this.port);
-			InputStreamReader streamReader = new InputStreamReader(this.sock.getInputStream());
-			this.reader = new BufferedReader(streamReader);
-			this.writer = new PrintWriter(this.sock.getOutputStream());
+			this.inputStream = new ObjectInputStream(this.sock.getInputStream());
+			this.outputStream = new ObjectOutputStream(this.sock.getOutputStream());
 			
 			System.out.println("Network established in address: " + this.addr + " port: " + String.valueOf(this.port));
 		}
@@ -108,9 +107,9 @@ public class ChatClient
 					Date date = new Date();
 					
 					Message msg = new Message(outgoingMsg, user, date);
-							
-					writer.println(msg);
-					writer.flush();
+
+					outputStream.writeObject(msg);
+					outputStream.flush();
 				}
 			}
 			catch (Exception ex)

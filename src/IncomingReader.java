@@ -1,28 +1,30 @@
-import java.io.BufferedReader;
+import java.io.ObjectInputStream;
 
 import javax.swing.JTextArea;
 
+import Models.Message;
+
 public class IncomingReader implements Runnable
 {	
-	private BufferedReader reader;
+	private ObjectInputStream inputStream;
 	private JTextArea incoming;
 	
-	public IncomingReader(BufferedReader reader, JTextArea incoming)
+	public IncomingReader(ObjectInputStream inputStream, JTextArea incoming)
 	{
-		this.reader = reader;
+		this.inputStream = inputStream;
 		this.incoming = incoming;
 	}
 	
 	@Override
 	public void run()
 	{
-		String msg;
+		Message msg;
 		
 		try
 		{
-			while ((msg = this.reader.readLine()) != null)
+			while ((msg = (Message) this.inputStream.readObject()) != null)
 			{
-				System.out.println("Read: " + msg);
+				System.out.println("Read: " + msg.getTimeFromDate());
 				this.incoming.append(msg + "\n");
 			}
 		}
