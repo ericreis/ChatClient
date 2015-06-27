@@ -11,6 +11,13 @@ public class Message implements Serializable
 	private Date date;
 	private String timeFromDate;
 	
+	public Message(String content, Date date)
+	{
+		this.content = content;
+		this.user = "";
+		this.date = date;
+	}
+	
 	public Message(String content, String user, Date date)
 	{
 		this.content = content;

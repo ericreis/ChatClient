@@ -2,6 +2,7 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		new ChatClient().go();
+		ChatClient cc = new ChatClient("Eric");
+		cc.go();
 	}
 }

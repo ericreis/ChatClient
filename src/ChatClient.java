@@ -24,6 +24,8 @@ public class ChatClient
 	private final int port = 5000;
 	private final String title = "Chat Client";
 	
+	private String user;
+	
 	private JTextArea incoming;
 	private JScrollPane qScroll;
 	private JTextField outgoing;
@@ -33,6 +35,11 @@ public class ChatClient
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
 	private Socket sock;
+	
+	public ChatClient(String user)
+	{
+		this.user = user;
+	}
 	
 	public void go()
 	{
@@ -86,6 +93,12 @@ public class ChatClient
 			this.outputStream = new ObjectOutputStream(this.sock.getOutputStream());
 			
 			System.out.println("Network established in address: " + this.addr + " port: " + String.valueOf(this.port));
+			
+			Date date = new Date();
+			Message msg = new Message(this.user + " has just connected to chat", date);
+
+			outputStream.writeObject(msg);
+			outputStream.flush();
 		}
 		catch (IOException ex)
 		{
