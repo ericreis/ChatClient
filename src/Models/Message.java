@@ -14,7 +14,6 @@ public class Message implements Serializable
 	public Message(String content, Date date)
 	{
 		this.content = content;
-		this.user = "";
 		this.date = date;
 	}
 	
@@ -65,7 +64,14 @@ public class Message implements Serializable
 	public String toString()
 	{
 		String msg;
-		msg = this.timeFromDate + " " + this.user + ": " + this.content;
+		if (this.user == null)
+		{
+			msg = this.timeFromDate + " " + this.content;
+		}
+		else
+		{
+			msg = this.timeFromDate + " " + this.user + ": " + this.content;
+		}
 		return msg;
 	}
 	

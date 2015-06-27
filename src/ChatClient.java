@@ -22,14 +22,13 @@ public class ChatClient
 {
 	private final String addr = "127.0.0.1";
 	private final int port = 5000;
-	private final String title = "Chat Client";
+	private String title = "Chat Client";
 	
 	private String user;
 	
 	private JTextArea incoming;
 	private JScrollPane qScroll;
 	private JTextField outgoing;
-	private JTextField username;
 	private JButton sendButton;
 	
 	private ObjectInputStream inputStream;
@@ -39,6 +38,7 @@ public class ChatClient
 	public ChatClient(String user)
 	{
 		this.user = user;
+		this.title = "Chat Client - " + user;
 	}
 	
 	public void go()
@@ -51,7 +51,6 @@ public class ChatClient
 		
 		this.incoming = new JTextArea(15,50);
 		this.outgoing = new JTextField(40);
-		this.username = new JTextField(40);
 		this.sendButton = new JButton("Send!");
 		this.qScroll = new JScrollPane(this.incoming);
 		
@@ -66,7 +65,6 @@ public class ChatClient
 		this.outgoing.addActionListener(new SendListener());
 		this.sendButton.addActionListener(new SendListener());
 		
-		mainPanel.add(this.username);
 		mainPanel.add(this.qScroll);
 		mainPanel.add(this.outgoing);
 		mainPanel.add(this.sendButton);
@@ -116,7 +114,6 @@ public class ChatClient
 				if (!outgoing.getText().trim().equals(""))
 				{
 					String outgoingMsg = outgoing.getText().trim();
-					String user = username.getText();
 					Date date = new Date();
 					
 					Message msg = new Message(outgoingMsg, user, date);
