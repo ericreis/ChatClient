@@ -16,8 +16,8 @@ public class LoginWindow
 	
 	private JFrame frame;
 	
-	private JLabel usernameLbl;
-	private JTextField username;
+	private JLabel usernameLbl, ipAddrLbl;
+	private JTextField username, ipAddr;
 	private JButton login;
 	
 	public void go()
@@ -27,16 +27,22 @@ public class LoginWindow
 		
 		this.usernameLbl = new JLabel("Username:");
 		this.username = new JTextField(40);
+		this.ipAddrLbl = new JLabel("IP Address:");
+		this.ipAddr = new JTextField(40);
 		this.login = new JButton("Login!");
+		
+		this.ipAddr.setText("127.0.0.1");
 	
 		mainPanel.add(this.usernameLbl);
 		mainPanel.add(this.username);
+		mainPanel.add(this.ipAddrLbl);
+		mainPanel.add(this.ipAddr);
 		mainPanel.add(this.login);
 		
 		this.login.addActionListener(new LoginListener());
 		
 		this.frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
-		this.frame.setSize(600, 100);
+		this.frame.setSize(600, 130);
 		this.frame.setVisible(true);
 	}
 	
@@ -54,9 +60,13 @@ public class LoginWindow
 			{
 				JOptionPane.showMessageDialog(null, "Username field must be filled");
 			}
+			else if (ipAddr.getText().length() == 0)
+			{
+				JOptionPane.showMessageDialog(null, "IP Address field must be filled");
+			}
 			else
 			{
-				ChatClient cc = new ChatClient(username.getText().toString());
+				ChatClient cc = new ChatClient(username.getText().trim(), ipAddr.getText().trim());
 				cc.go();
 				close();
 			}

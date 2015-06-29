@@ -20,8 +20,8 @@ import Models.Message;
 
 public class ChatClient
 {
-	private final String addr = "127.0.0.1";
 	private final int port = 5000;
+	private String addr = "127.0.0.1";
 	private String title = "Chat Client";
 	
 	private String user;
@@ -35,9 +35,10 @@ public class ChatClient
 	private ObjectOutputStream outputStream;
 	private Socket sock;
 	
-	public ChatClient(String user)
+	public ChatClient(String user, String addr)
 	{
 		this.user = user;
+		this.addr = addr;
 		this.title = "Chat Client - " + user;
 	}
 	
